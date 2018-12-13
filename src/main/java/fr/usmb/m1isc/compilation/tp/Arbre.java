@@ -58,6 +58,81 @@ public class Arbre {
 		return listeIdentificateurs;
 	}
 
+	public void genereCode() {
+
+
+		switch (this.valeur){
+			case "let":
+				if (this.droite != null)
+					this.droite.genereCode();
+				//System.out.println("pop eax");
+				//System.out.println("mov"this.gauche.valeur + ", eax");
+				break;
+
+			case ";":
+				if (this.gauche != null)
+					this.gauche.genereCode();
+				if (this.droite != null)
+					this.droite.genereCode();
+				System.out.println("pop eax");
+				System.out.println("pop eax");
+				break;
+
+			case "/":
+				if (this.gauche != null)
+					this.gauche.genereCode();
+				if (this.droite != null)
+					this.droite.genereCode();
+				System.out.println("pop eax");
+				System.out.println("pop ebx");
+				System.out.println("div eax, ebx");
+				System.out.println("push eax");
+				break;
+
+			case "*":
+				if (this.gauche != null)
+					this.gauche.genereCode();
+				if (this.droite != null)
+					this.droite.genereCode();
+				System.out.println("pop eax");
+				System.out.println("pop ebx");
+				System.out.println("mul eax, ebx");
+				System.out.println("push eax");
+				break;
+
+			case "+":
+				if (this.gauche != null)
+					this.gauche.genereCode();
+				if (this.droite != null)
+					this.droite.genereCode();
+				System.out.println("pop eax");
+				System.out.println("pop ebx");
+				System.out.println("add eax, ebx");
+				System.out.println("push eax");
+				break;
+
+			case "-":
+				if (this.gauche != null)
+					this.gauche.genereCode();
+				if (this.droite != null)
+					this.droite.genereCode();
+				System.out.println("pop eax");
+				System.out.println("pop ebx");
+				System.out.println("add eax, ebx");
+				System.out.println("push eax");
+				break;
+
+
+			default:	// Si on est pas sur un identificateur (et donc une valeur)
+				System.out.println("mov eax, " + this.valeur );	// on la met dans la pile
+				System.out.println("push eax");	// on la met dans la pile
+				break;
+		}
+
+
+
+	}
+
 	public String getvalue() {
 		return this.valeur;
 	}

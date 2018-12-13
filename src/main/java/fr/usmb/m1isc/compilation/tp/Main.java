@@ -42,6 +42,8 @@ public class Main {
             fw.write(String.format("CODE SEGMENT"));
             fw.write(System.lineSeparator()); //new line
             /* CODE */
+            arb.genereCode();
+
 
             fw.write(String.format("CODE ENDS"));
             fw.write(System.lineSeparator()); //new line
