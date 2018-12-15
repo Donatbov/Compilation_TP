@@ -18,7 +18,7 @@ public class Arbre {
 	private Arbre gauche;
 	private Arbre droite;
 	private Type type;
-    private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0;
+    private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0, nbIf = 0;
 
 	public Arbre(String valeur, Arbre gauche, Arbre droite, Type type) {
 		this.valeur = valeur;
@@ -197,6 +197,32 @@ public class Arbre {
                     fw.write("sortie_while" + nbWhile + ":");
                     fw.write(System.lineSeparator());
 
+                }
+                break;
+
+            case "if":
+                if (this.gauche != null && this.droite != null) {
+                    nbIf++;
+                    this.gauche.genereCode(fw); // génération de la condition
+                    fw.write("\tjnz debut_then" + nbIf);    // si la condition est vraie, on va dans le then statement
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjmp debut_else" + nbIf);    // sinon, on va dans le else statement
+                    fw.write(System.lineSeparator());
+
+                    fw.write("debut_then" + nbIf + ":");
+                    fw.write(System.lineSeparator());
+                    this.droite.gauche.genereCode(fw);     // on génere le code associé au then
+                    fw.write("\tjmp fin_if" + nbIf);
+                    fw.write(System.lineSeparator());
+
+                    fw.write("debut_else" + nbIf + ":");
+                    fw.write(System.lineSeparator());
+                    this.droite.droite.genereCode(fw);     // on génere le code associé au else
+                    fw.write("\tjmp fin_if" + nbIf);
+                    fw.write(System.lineSeparator());
+
+                    fw.write("fin_if" + nbIf + ":");
+                    fw.write(System.lineSeparator());
                 }
             break;
 

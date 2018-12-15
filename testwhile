@@ -1,5 +1,4 @@
 let a = input;
 let b = input;
-while (b > 0)
-do (let aux = (a mod b); let a = b; let b = aux );
-output a .
+if (a < b) then (output a) else (output b);
+.
