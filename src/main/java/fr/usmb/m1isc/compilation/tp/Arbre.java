@@ -18,7 +18,7 @@ public class Arbre {
 	private Arbre gauche;
 	private Arbre droite;
 	private Type type;
-    private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0, nbIf = 0, nbNot = 0, nbAnd = 0, nbOr = 0;
+    private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0, nbIf = 0, nbNot = 0;
 
 	public Arbre(String valeur, Arbre gauche, Arbre droite, Type type) {
 		this.valeur = valeur;
@@ -228,7 +228,7 @@ public class Arbre {
 
             case "not":
                 if (this.gauche != null){
-                    nbNot = 0;
+                    nbNot++;
                     this.gauche.genereCode(fw);
                     fw.write("\tjz faux_" + nbNot);
                     fw.write(System.lineSeparator());
@@ -245,6 +245,33 @@ public class Arbre {
                     fw.write("sortie_not_" + nbNot + ":");
                     fw.write(System.lineSeparator());
                 }
+                break;
+
+            case "and":
+                if (this.gauche != null && this.droite != null) {
+                    this.droite.genereCode(fw);
+                    this.gauche.genereCode(fw);
+                    fw.write("\tpop eax");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tpop ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmul eax, ebx");
+                    fw.write(System.lineSeparator());
+                }
+                break;
+
+            case "or":
+                if (this.gauche != null && this.droite != null) {
+                    this.droite.genereCode(fw);
+                    this.gauche.genereCode(fw);
+                    fw.write("\tpop eax");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tpop ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tadd eax, ebx");
+                    fw.write(System.lineSeparator());
+                }
+                break;
 
             case "<":
                 if (this.gauche != null && this.droite != null) {
