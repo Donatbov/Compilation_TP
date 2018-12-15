@@ -8,23 +8,23 @@ import java_cup.runtime.Symbol;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception  {
-		 LexicalAnalyzer yy;
-		 if (args.length > 0) {
-			 yy = new LexicalAnalyzer(new FileReader(args[0]));
-		 }else {
-			 yy = new LexicalAnalyzer(new InputStreamReader(System.in));
-		 }
-		@SuppressWarnings("deprecation")
-		parser p = new parser (yy);
-		Symbol s = p.parse( );
-		Arbre arb = (Arbre)s.value;
+    public static void main(String[] args) throws Exception  {
+        LexicalAnalyzer yy;
+        if (args.length > 0) {
+            yy = new LexicalAnalyzer(new FileReader(args[0]));
+        }else {
+            yy = new LexicalAnalyzer(new InputStreamReader(System.in));
+        }
+        @SuppressWarnings("deprecation")
+        parser p = new parser (yy);
+        Symbol s = p.parse( );
+        Arbre arb = (Arbre)s.value;
 
-		/* génération de code */
+        /* génération de code */
         FileWriter fw = new FileWriter(new File(args[1]));
         try{
-            // 1) DATA SEGMENT
 
+            // 1) DATA SEGMENT
             fw.write(String.format("DATA SEGMENT"));
             fw.write(System.lineSeparator()); //new line
             // on parcourt l'arbre pour detecter les let
@@ -38,11 +38,10 @@ public class Main {
             fw.write(System.lineSeparator()); //new line
 
             // 2) CODE SEGMENT
-
             fw.write(String.format("CODE SEGMENT"));
             fw.write(System.lineSeparator()); //new line
             /* CODE */
-            arb.genereCode();
+            arb.genereCode(fw);
 
 
             fw.write(String.format("CODE ENDS"));
@@ -58,6 +57,6 @@ public class Main {
 
 
 
-		//arb.ParcoursPrefixe();
-	}
+        arb.ParcoursPrefixe();
+    }
 }

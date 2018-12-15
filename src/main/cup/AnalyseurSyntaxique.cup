@@ -90,4 +90,3 @@ expr ::= NOT:op expr:e			{: RESULT= new Arbre("not", e, null); :}
 	   | IDENT:id				{: RESULT= new Arbre(id, null, null,Type.Id); :} 
 	   | PAR_G sequence:e PAR_D {: RESULT= e; :} 
 	   ;
-
