@@ -18,7 +18,7 @@ public class Arbre {
 	private Arbre gauche;
 	private Arbre droite;
 	private Type type;
-    private int nbWhile,nbCondGT,nbCondLT;
+    private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0;
 
 	public Arbre(String valeur, Arbre gauche, Arbre droite, Type type) {
 		this.valeur = valeur;
@@ -154,11 +154,13 @@ public class Arbre {
 				fw.write("\tin eax");
                 fw.write(System.lineSeparator());
 				fw.write("\tpush eax");
+                fw.write(System.lineSeparator());
+
 				break;
 
 			case "while":
 				this.nbWhile++;
-				fw.write("debut_while" + this.nbWhile);
+				fw.write("debut_while" + this.nbWhile + ":");
                 fw.write(System.lineSeparator());
 				if (this.gauche != null)
 					this.gauche.genereCode(fw);
@@ -166,7 +168,7 @@ public class Arbre {
 					this.droite.genereCode(fw);
 				fw.write("\tjmp debut_while_" + nbWhile);
                 fw.write(System.lineSeparator());
-				fw.write("sortie_while_" + this.nbWhile);
+				fw.write("sortie_while_" + this.nbWhile + ":");
                 fw.write(System.lineSeparator());
 				break;
 
@@ -188,7 +190,7 @@ public class Arbre {
                 fw.write(System.lineSeparator());
 				fw.write("\tjmp sortie_lt_" + this.nbCondLT);
                 fw.write(System.lineSeparator());
-				fw.write("faux_lt_" + this.nbCondLT);
+				fw.write("faux_lt_" + this.nbCondLT + ":");
                 fw.write(System.lineSeparator());
 				fw.write("\tmov eax, 0");
                 fw.write(System.lineSeparator());
@@ -220,11 +222,11 @@ public class Arbre {
                 fw.write(System.lineSeparator());
 				fw.write("\tjmp sortie_gt_" + this.nbCondGT);
                 fw.write(System.lineSeparator());
-				fw.write("faux_gt_" + this.nbCondGT);
+				fw.write("faux_gt_" + this.nbCondGT + ":");
                 fw.write(System.lineSeparator());
 				fw.write("\tmov eax, 0");
                 fw.write(System.lineSeparator());
-				fw.write("sortie_gt_" + this.nbCondGT);
+				fw.write("sortie_gt_" + this.nbCondGT + ":");
                 fw.write(System.lineSeparator());
 				fw.write("\tjz sortie_while_" + this.nbWhile);
                 fw.write(System.lineSeparator());
