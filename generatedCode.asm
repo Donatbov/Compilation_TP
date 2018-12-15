@@ -17,6 +17,20 @@ CODE SEGMENT
 	push eax
 	pop eax
 debut_while1:
+	mov eax, 0
+	push eax
+	mov eax, b
+	push eax
+	pop eax
+	pop ebx
+	sub eax, ebx
+	jl vrai_lt_1
+	mov eax, 0
+	jmp sortie_lt_1
+vrai_lt_1:
+	mov eax, 1
+sortie_lt_1:
+	jz sortie_while1
 	mov eax, a
 	push eax
 	mov eax, b
@@ -43,20 +57,6 @@ debut_while1:
 	pop eax
 	mov b, eax
 	push eax
-	jz sortie_while1
-	mov eax, 0
-	push eax
-	mov eax, b
-	push eax
-	pop eax
-	pop ebx
-	sub eax, ebx
-	jg vrai_gt1
-	mov eax, 0
-	jmp sortie_gt_1
-vrai_gt_1:
-	mov eax, 1
-sortie_gt_1:
 	jmp debut_while1
 sortie_while1:
 	pop eax

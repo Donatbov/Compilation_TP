@@ -177,7 +177,7 @@ public class Arbre {
             break;
 
             case "output":
-                fw.write("\tmov eax, " + this.droite.valeur);
+                fw.write("\tmov eax, " + this.gauche.valeur);
                 fw.write(System.lineSeparator());
                 fw.write("\tout eax");
                 fw.write(System.lineSeparator());
@@ -188,10 +188,10 @@ public class Arbre {
                     nbWhile++;
                     fw.write("debut_while" + nbWhile + ":");
                     fw.write(System.lineSeparator());
-                    this.droite.genereCode(fw); // génération de la condition
+                    this.gauche.genereCode(fw); // génération de la condition
                     fw.write("\tjz sortie_while" + nbWhile);    // si la condition est fausse, on sort du while
                     fw.write(System.lineSeparator());
-                    this.gauche.genereCode(fw);     // sinon, on génere le code associé au while
+                    this.droite.genereCode(fw);     // sinon, on génere le code associé au while
                     fw.write("\tjmp debut_while" + nbWhile);    // on réévalue la condition
                     fw.write(System.lineSeparator());
                     fw.write("sortie_while" + nbWhile + ":");
@@ -203,7 +203,6 @@ public class Arbre {
                 if (this.gauche != null && this.droite != null) {
                     nbCondLT++;
                     this.gauche.genereCode(fw);
-                    System.out.println("dddddddddddddd " + this.gauche.valeur);
                     this.droite.genereCode(fw);
                     fw.write("\tpop eax");
                     fw.write(System.lineSeparator());
