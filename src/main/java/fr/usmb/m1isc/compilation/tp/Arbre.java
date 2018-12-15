@@ -6,32 +6,17 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Set;
 
-enum Type{
-	Entier,
-	Id,
-	Operateur
-}
-
 
 public class Arbre {
 	private String valeur;
 	private Arbre gauche;
 	private Arbre droite;
-	private Type type;
     private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0, nbIf = 0, nbNot = 0;
-
-	public Arbre(String valeur, Arbre gauche, Arbre droite, Type type) {
-		this.valeur = valeur;
-		this.gauche = gauche;
-		this.droite = droite;
-		this.type = type;
-	}
 
 	public Arbre(String valeur, Arbre gauche, Arbre droite) {
 		this.valeur = valeur;
 		this.gauche = gauche;
 		this.droite = droite;
-		this.type = Type.Operateur;
 	}
 
 	public void ParcoursPrefixe() {
@@ -299,6 +284,32 @@ public class Arbre {
                 }
             break;
 
+            case "<=":
+                if (this.gauche != null && this.droite != null) {
+                    nbCondLT++;
+                    this.droite.genereCode(fw);
+                    this.gauche.genereCode(fw);
+                    fw.write("\tpop eax");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tpop ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tsub eax, ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjle vrai_lt_" + nbCondLT);
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 0");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjmp sortie_lt_" + nbCondLT);
+                    fw.write(System.lineSeparator());
+                    fw.write("vrai_lt_" + nbCondLT + ":");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 1");
+                    fw.write(System.lineSeparator());
+                    fw.write("sortie_lt_" + nbCondLT + ":");
+                    fw.write(System.lineSeparator());
+                }
+                break;
+
             case ">":
                 if (this.gauche != null && this.droite != null) {
                     nbCondGT++;
@@ -324,6 +335,32 @@ public class Arbre {
                     fw.write(System.lineSeparator());
                 }
             break;
+
+            case ">=":
+                if (this.gauche != null && this.droite != null) {
+                    nbCondGT++;
+                    this.droite.genereCode(fw);
+                    this.gauche.genereCode(fw);
+                    fw.write("\tpop eax");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tpop ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tsub eax, ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjge vrai_gt_" + nbCondGT);
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 0");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjmp sortie_gt_" + nbCondGT);
+                    fw.write(System.lineSeparator());
+                    fw.write("vrai_gt_" + nbCondGT + ":");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 1");
+                    fw.write(System.lineSeparator());
+                    fw.write("sortie_gt_" + nbCondGT + ":");
+                    fw.write(System.lineSeparator());
+                }
+                break;
 
 
 			default:	// Si on est pas sur un identificateur (et donc une valeur)

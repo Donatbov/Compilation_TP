@@ -88,7 +88,7 @@ expr ::= NOT:op expr:e			{: RESULT= new Arbre("not", e, null); :}
 	   | OUTPUT expr:e			{: RESULT= new Arbre("output", e, null); :}
 	   | INPUT					{: RESULT= new Arbre("input", null, null); :}
 	   | NIL					{: RESULT= new Arbre("nil", null, null); :}
-	   | ENTIER:n				{: RESULT= new Arbre(n.toString(), null, null,Type.Entier); :}
-	   | IDENT:id				{: RESULT= new Arbre(id, null, null,Type.Id); :}
+	   | ENTIER:n				{: RESULT= new Arbre(n.toString(), null, null); :}
+	   | IDENT:id				{: RESULT= new Arbre(id, null, null); :}
 	   | PAR_G sequence:e PAR_D {: RESULT= e; :}
 	   ;
