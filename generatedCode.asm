@@ -16,23 +16,21 @@ CODE SEGMENT
 	mov b, eax
 	push eax
 	pop eax
-debut_while1:
+debut_while_1:
 	mov eax, 0
 	push eax
 	mov eax, b
+	push eax
+	pop eax
 	pop ebx
-	sub ebx, eax
-	jle faux_gt_1
+	sub eax, ebx
+	jle faux_lt_1
 	mov eax, 1
-	jmp sortie_gt_1
-faux_gt_1:
+	jmp sortie_lt_1
+faux_lt_1:
 	mov eax, 0
-sortie_gt_1:
+sortie_lt_1:
 	jz sortie_while_1
-	mov eax, 0
-	push eax
-	mov eax, b
-	push eax
 	mov eax, b
 	push eax
 	mov eax, a

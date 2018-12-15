@@ -25,7 +25,7 @@ public class Main {
         try{
 
             // 1) DATA SEGMENT
-            fw.write(String.format("DATA SEGMENT"));
+            fw.write("DATA SEGMENT");
             fw.write(System.lineSeparator()); //new line
             // on parcourt l'arbre pour detecter les let
             Set<String> listeIdentificateurs = new HashSet<String>();
@@ -34,28 +34,23 @@ public class Main {
                 fw.write(String.format("\t%s DD",id));
                 fw.write(System.lineSeparator()); //new line
             }
-            fw.write(String.format("DATA ENDS"));
+            fw.write("DATA ENDS");
             fw.write(System.lineSeparator()); //new line
 
             // 2) CODE SEGMENT
-            fw.write(String.format("CODE SEGMENT"));
+            fw.write("CODE SEGMENT");
             fw.write(System.lineSeparator()); //new line
             /* CODE */
             arb.genereCode(fw);
 
 
-            fw.write(String.format("CODE ENDS"));
+            fw.write("CODE ENDS");
             fw.write(System.lineSeparator()); //new line
 
             fw.close();
         }catch (IOException ex){
             ex.printStackTrace();
         }
-
-
-
-
-
 
         arb.ParcoursPrefixe();
     }

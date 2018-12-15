@@ -160,10 +160,12 @@ public class Arbre {
 
 			case "while":
 				nbWhile++;
-				fw.write("debut_while" + nbWhile + ":");
+				fw.write("debut_while_" + nbWhile + ":");
                 fw.write(System.lineSeparator());
 				if (this.gauche != null)
 					this.gauche.genereCode(fw);
+				fw.write("\tjz sortie_while_" + nbWhile);
+				fw.write(System.lineSeparator());
 				if (this.droite != null)
 					this.droite.genereCode(fw);
 				fw.write("\tjmp debut_while_" + nbWhile);
@@ -174,12 +176,12 @@ public class Arbre {
 
 			case "<":
 				nbCondLT++;
-				fw.write("\tmov eax, " + this.gauche.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpush eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, " + this.droite.valeur);
-                fw.write(System.lineSeparator());
+				if (this.gauche != null)
+					this.gauche.genereCode(fw);
+				if (this.droite != null)
+					this.droite.genereCode(fw);
+				fw.write("\tpop eax");
+				fw.write(System.lineSeparator());
 				fw.write("\tpop ebx");
                 fw.write(System.lineSeparator());
 				fw.write("\tsub eax, ebx");
@@ -194,24 +196,19 @@ public class Arbre {
                 fw.write(System.lineSeparator());
 				fw.write("\tmov eax, 0");
                 fw.write(System.lineSeparator());
-				fw.write("sortie_lt_" + nbCondLT);
+				fw.write("sortie_lt_" + nbCondLT +":");
                 fw.write(System.lineSeparator());
-				fw.write("\tjz sortie_while_" + nbWhile);
-                fw.write(System.lineSeparator());
-				if (this.gauche != null)
-					this.gauche.genereCode(fw);
-				if (this.droite != null)
-					this.droite.genereCode(fw);
+
 				break;
 
 			case ">":
 				nbCondGT++;
-				fw.write("\tmov eax, " + this.gauche.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpush eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, " + this.droite.valeur);
-                fw.write(System.lineSeparator());
+				if (this.gauche != null)
+					this.gauche.genereCode(fw);
+				if (this.droite != null)
+					this.droite.genereCode(fw);
+				fw.write("\tpop eax");
+				fw.write(System.lineSeparator());
 				fw.write("\tpop ebx");
                 fw.write(System.lineSeparator());
 				fw.write("\tsub ebx, eax");
@@ -220,7 +217,7 @@ public class Arbre {
                 fw.write(System.lineSeparator());
 				fw.write("\tmov eax, 1");
                 fw.write(System.lineSeparator());
-				fw.write("\tjmp sortie_gt_" + nbCondGT);
+				fw.write("\tjmp sortie_gt_" + nbCondGT + ":");
                 fw.write(System.lineSeparator());
 				fw.write("faux_gt_" + nbCondGT + ":");
                 fw.write(System.lineSeparator());
@@ -228,12 +225,6 @@ public class Arbre {
                 fw.write(System.lineSeparator());
 				fw.write("sortie_gt_" + nbCondGT + ":");
                 fw.write(System.lineSeparator());
-				fw.write("\tjz sortie_while_" + nbWhile);
-                fw.write(System.lineSeparator());
-				if (this.gauche != null)
-					this.gauche.genereCode(fw);
-				if (this.droite != null)
-					this.droite.genereCode(fw);
 				break;
 
 			case "%":
