@@ -150,8 +150,8 @@ public class Arbre {
 
             case "%":
                 if (this.gauche != null && this.droite != null) {
-                    this.gauche.genereCode(fw);
                     this.droite.genereCode(fw);
+                    this.gauche.genereCode(fw);
                     fw.write("\tpop eax");
                     fw.write(System.lineSeparator());
                     fw.write("\tpop ebx");
@@ -196,14 +196,15 @@ public class Arbre {
                     fw.write(System.lineSeparator());
                     fw.write("sortie_while" + nbWhile + ":");
                     fw.write(System.lineSeparator());
+
                 }
             break;
 
             case "<":
                 if (this.gauche != null && this.droite != null) {
                     nbCondLT++;
-                    this.gauche.genereCode(fw);
                     this.droite.genereCode(fw);
+                    this.gauche.genereCode(fw);
                     fw.write("\tpop eax");
                     fw.write(System.lineSeparator());
                     fw.write("\tpop ebx");

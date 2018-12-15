@@ -17,9 +17,9 @@ CODE SEGMENT
 	push eax
 	pop eax
 debut_while1:
-	mov eax, 0
-	push eax
 	mov eax, b
+	push eax
+	mov eax, 0
 	push eax
 	pop eax
 	pop ebx
@@ -31,9 +31,9 @@ vrai_lt_1:
 	mov eax, 1
 sortie_lt_1:
 	jz sortie_while1
-	mov eax, a
-	push eax
 	mov eax, b
+	push eax
+	mov eax, a
 	push eax
 	pop eax
 	pop ebx
