@@ -247,7 +247,10 @@ public class Arbre {
 				fw.write("\tpush eax");
                 fw.write(System.lineSeparator());
 				break;
-
+			case "output":
+				fw.write("\tout " + this.droite.valeur); // on la met dans la pile
+				fw.write(System.lineSeparator());
+				break;
 
 			default:	// Si on est pas sur un identificateur (et donc une valeur)
 				fw.write("\tmov eax, " + this.valeur); // on la met dans la pile

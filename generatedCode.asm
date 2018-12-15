@@ -60,8 +60,7 @@ sortie_lt_1:
 	jmp debut_while_1
 sortie_while_1:
 	pop eax
-	mov eax, output
-	push eax
+	out a
 	pop eax
 	pop eax
 	pop eax
