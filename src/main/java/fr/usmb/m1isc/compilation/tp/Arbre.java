@@ -83,8 +83,6 @@ public class Arbre {
                 }
                 if (this.droite != null) {
                     this.droite.genereCode(fw);
-                    fw.write("\tpop eax");
-                    fw.write(System.lineSeparator());
                 }
                 break;
 
@@ -121,6 +119,36 @@ public class Arbre {
 				break;
 
 			case "+":
+            if (this.gauche != null && this.droite != null) {
+                this.gauche.genereCode(fw);
+                this.droite.genereCode(fw);
+                fw.write("\tpop eax");
+                fw.write(System.lineSeparator());
+                fw.write("\tpop ebx");
+                fw.write(System.lineSeparator());
+                fw.write("\tadd eax, ebx");
+                fw.write(System.lineSeparator());
+                fw.write("\tpush eax");
+                fw.write(System.lineSeparator());
+            }
+            break;
+
+            case "-":
+            if (this.gauche != null && this.droite != null) {
+                this.gauche.genereCode(fw);
+                this.droite.genereCode(fw);
+                fw.write("\tpop eax");
+                fw.write(System.lineSeparator());
+                fw.write("\tpop ebx");
+                fw.write(System.lineSeparator());
+                fw.write("\tsub eax, ebx");
+                fw.write(System.lineSeparator());
+                fw.write("\tpush eax");
+                fw.write(System.lineSeparator());
+            }
+            break;
+
+            case "%":
                 if (this.gauche != null && this.droite != null) {
                     this.gauche.genereCode(fw);
                     this.droite.genereCode(fw);
@@ -128,15 +156,79 @@ public class Arbre {
                     fw.write(System.lineSeparator());
                     fw.write("\tpop ebx");
                     fw.write(System.lineSeparator());
-                    fw.write("\tadd eax, ebx");
+                    fw.write("\tmov ecx, eax");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tdiv ecx, ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmul ebx, ecx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tsub eax, ebx");
                     fw.write(System.lineSeparator());
                     fw.write("\tpush eax");
                     fw.write(System.lineSeparator());
                 }
-				break;
+                break;
 
-			case "-":
+            case "input":
+                fw.write("\tin eax");
+                fw.write(System.lineSeparator());
+                fw.write("\tpush eax");
+                fw.write(System.lineSeparator());
+            break;
+
+            case "output":
+                fw.write("\tmov eax, " + this.droite.valeur);
+                fw.write(System.lineSeparator());
+                fw.write("\tout eax");
+                fw.write(System.lineSeparator());
+                break;
+
+            case "while":
                 if (this.gauche != null && this.droite != null) {
+                    nbWhile++;
+                    fw.write("debut_while" + nbWhile + ":");
+                    fw.write(System.lineSeparator());
+                    this.droite.genereCode(fw); // génération de la condition
+                    fw.write("\tjz sortie_while" + nbWhile);    // si la condition est fausse, on sort du while
+                    fw.write(System.lineSeparator());
+                    this.gauche.genereCode(fw);     // sinon, on génere le code associé au while
+                    fw.write("\tjmp debut_while" + nbWhile);    // on réévalue la condition
+                    fw.write(System.lineSeparator());
+                    fw.write("sortie_while" + nbWhile + ":");
+                    fw.write(System.lineSeparator());
+                }
+            break;
+
+            case "<":
+                if (this.gauche != null && this.droite != null) {
+                    nbCondLT++;
+                    this.gauche.genereCode(fw);
+                    System.out.println("dddddddddddddd " + this.gauche.valeur);
+                    this.droite.genereCode(fw);
+                    fw.write("\tpop eax");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tpop ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tsub eax, ebx");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjl vrai_lt_" + nbCondLT);
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 0");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjmp sortie_lt_" + nbCondLT);
+                    fw.write(System.lineSeparator());
+                    fw.write("vrai_lt_" + nbCondLT + ":");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 1");
+                    fw.write(System.lineSeparator());
+                    fw.write("sortie_lt_" + nbCondLT + ":");
+                    fw.write(System.lineSeparator());
+                }
+            break;
+
+            case ">":
+                if (this.gauche != null && this.droite != null) {
+                    nbCondGT++;
                     this.gauche.genereCode(fw);
                     this.droite.genereCode(fw);
                     fw.write("\tpop eax");
@@ -145,117 +237,20 @@ public class Arbre {
                     fw.write(System.lineSeparator());
                     fw.write("\tsub eax, ebx");
                     fw.write(System.lineSeparator());
-                    fw.write("\tpush eax");
+                    fw.write("\tjg vrai_gt" + nbCondGT);
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 0");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjmp sortie_gt_" + nbCondGT);
+                    fw.write(System.lineSeparator());
+                    fw.write("vrai_gt_" + nbCondGT + ":");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 1");
+                    fw.write(System.lineSeparator());
+                    fw.write("sortie_gt_" + nbCondGT + ":");
                     fw.write(System.lineSeparator());
                 }
-				break;
-
-			case "input":
-				fw.write("\tin eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tpush eax");
-                fw.write(System.lineSeparator());
-
-				break;
-
-			case "while":
-				nbWhile++;
-				fw.write("debut_while" + nbWhile + ":");
-                fw.write(System.lineSeparator());
-				if (this.gauche != null)
-					this.gauche.genereCode(fw);
-				if (this.droite != null)
-					this.droite.genereCode(fw);
-				fw.write("\tjmp debut_while_" + nbWhile);
-                fw.write(System.lineSeparator());
-				fw.write("sortie_while_" + nbWhile + ":");
-                fw.write(System.lineSeparator());
-				break;
-
-			case "<":
-				nbCondLT++;
-				fw.write("\tmov eax, " + this.gauche.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpush eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, " + this.droite.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpop ebx");
-                fw.write(System.lineSeparator());
-				fw.write("\tsub eax, ebx");
-                fw.write(System.lineSeparator());
-				fw.write("\tjle faux_lt_" + nbCondLT);
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, 1");
-                fw.write(System.lineSeparator());
-				fw.write("\tjmp sortie_lt_" + nbCondLT);
-                fw.write(System.lineSeparator());
-				fw.write("faux_lt_" + nbCondLT + ":");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, 0");
-                fw.write(System.lineSeparator());
-				fw.write("sortie_lt_" + nbCondLT);
-                fw.write(System.lineSeparator());
-				fw.write("\tjz sortie_while_" + nbWhile);
-                fw.write(System.lineSeparator());
-				if (this.gauche != null)
-					this.gauche.genereCode(fw);
-				if (this.droite != null)
-					this.droite.genereCode(fw);
-				break;
-
-			case ">":
-				nbCondGT++;
-				fw.write("\tmov eax, " + this.gauche.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpush eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, " + this.droite.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpop ebx");
-                fw.write(System.lineSeparator());
-				fw.write("\tsub ebx, eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tjle faux_gt_" + nbCondGT);
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, 1");
-                fw.write(System.lineSeparator());
-				fw.write("\tjmp sortie_gt_" + nbCondGT);
-                fw.write(System.lineSeparator());
-				fw.write("faux_gt_" + nbCondGT + ":");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, 0");
-                fw.write(System.lineSeparator());
-				fw.write("sortie_gt_" + nbCondGT + ":");
-                fw.write(System.lineSeparator());
-				fw.write("\tjz sortie_while_" + nbWhile);
-                fw.write(System.lineSeparator());
-				if (this.gauche != null)
-					this.gauche.genereCode(fw);
-				if (this.droite != null)
-					this.droite.genereCode(fw);
-				break;
-
-			case "%":
-				fw.write("\tmov eax, " + this.droite.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpush eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov eax, " + this.gauche.valeur);
-                fw.write(System.lineSeparator());
-				fw.write("\tpop ebx");
-                fw.write(System.lineSeparator());
-				fw.write("\tmov ecx, eax");
-                fw.write(System.lineSeparator());
-				fw.write("\tdiv ecx, ebx");
-                fw.write(System.lineSeparator());
-				fw.write("\tmul ecx, ebx");
-                fw.write(System.lineSeparator());
-				fw.write("\tsub eax, ecx");
-                fw.write(System.lineSeparator());
-				fw.write("\tpush eax");
-                fw.write(System.lineSeparator());
-				break;
+            break;
 
 
 			default:	// Si on est pas sur un identificateur (et donc une valeur)

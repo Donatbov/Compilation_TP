@@ -1,2 +1,3 @@
-let prixHT = 200;
+let prixHt = 200;
+let test = 42;
 let prixTtc = prixHt * 119 / 100 .

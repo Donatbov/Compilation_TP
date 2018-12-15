@@ -42,7 +42,8 @@ public class Main {
             fw.write(System.lineSeparator()); //new line
             /* CODE */
             arb.genereCode(fw);
-
+            fw.write("\tpop eax");  // pour vider la pile de la derniere valeur push
+            fw.write(System.lineSeparator());
 
             fw.write(String.format("CODE ENDS"));
             fw.write(System.lineSeparator()); //new line
