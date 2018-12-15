@@ -18,7 +18,7 @@ public class Arbre {
 	private Arbre gauche;
 	private Arbre droite;
 	private Type type;
-    private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0, nbIf = 0;
+    private static int nbWhile = 0, nbCondGT = 0, nbCondLT = 0, nbIf = 0, nbNot = 0, nbAnd = 0, nbOr = 0;
 
 	public Arbre(String valeur, Arbre gauche, Arbre droite, Type type) {
 		this.valeur = valeur;
@@ -225,6 +225,26 @@ public class Arbre {
                     fw.write(System.lineSeparator());
                 }
             break;
+
+            case "not":
+                if (this.gauche != null){
+                    nbNot = 0;
+                    this.gauche.genereCode(fw);
+                    fw.write("\tjz faux_" + nbNot);
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 0");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjmp sortie_not_" + nbNot);
+                    fw.write(System.lineSeparator());
+                    fw.write("faux_" + nbNot + ":");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tmov eax, 1");
+                    fw.write(System.lineSeparator());
+                    fw.write("\tjmp sortie_not_" + nbNot);
+                    fw.write(System.lineSeparator());
+                    fw.write("sortie_not_" + nbNot + ":");
+                    fw.write(System.lineSeparator());
+                }
 
             case "<":
                 if (this.gauche != null && this.droite != null) {

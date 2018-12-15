@@ -15,19 +15,15 @@ CODE SEGMENT
 	mov b, eax
 	push eax
 	pop eax
-	mov eax, b
-	push eax
 	mov eax, a
 	push eax
-	pop eax
-	pop ebx
-	sub eax, ebx
-	jl vrai_lt_1
+	jz faux_0
 	mov eax, 0
-	jmp sortie_lt_1
-vrai_lt_1:
+	jmp sortie_not_0
+faux_0:
 	mov eax, 1
-sortie_lt_1:
+	jmp sortie_not_0
+sortie_not_0:
 	jnz debut_then1
 	jmp debut_else1
 debut_then1:

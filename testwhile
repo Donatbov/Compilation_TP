@@ -1,4 +1,4 @@
 let a = input;
 let b = input;
-if (a < b) then (output a) else (output b);
+if (not a) then (output a) else (output b);
 .
