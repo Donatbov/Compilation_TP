@@ -1,4 +1,0 @@
-let a = input;
-let b = input;
-if (3 <= 2) then (output a) else (output b);
-.

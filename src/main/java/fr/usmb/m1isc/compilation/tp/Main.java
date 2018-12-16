@@ -42,7 +42,6 @@ public class Main {
             fw.write(System.lineSeparator()); //new line
             /* CODE */
             arb.genereCode(fw);
-            fw.write(System.lineSeparator());
 
             fw.write("CODE ENDS");
             fw.write(System.lineSeparator()); //new line
