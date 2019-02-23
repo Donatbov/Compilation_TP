@@ -1,2 +1,2 @@
 * linguist-vendored
-*.jflex linguist-vendored=false
+*.java linguist-vendored=false
